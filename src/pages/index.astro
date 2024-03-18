@@ -1,5 +1,7 @@
 ---
 import {Image} from 'astro:assets'
+import Markdown from '../components/Markdown.astro'
+import Media from '../components/Media.astro'
 import Page from '../layouts/Page.astro'
 import {getPosts, isoDate, shortDate} from '../lib/utils'
 const posts = await getPosts()
@@ -41,8 +43,16 @@ const rendered = await Promise.all(posts.map(p => p.render()))
                 </h1>
               </header>
             )}
-            {image && <Image src={image} alt="" />}
-            {<Content />}
+            {image && (
+              <Media>
+                <Image src={image} alt="" />
+              </Media>
+            )}
+            {
+              <Markdown>
+                <Content />
+              </Markdown>
+            }
             {created && (
               <footer>
                 <time datetime={isoDate(created)}>{shortDate(created)}</time>
