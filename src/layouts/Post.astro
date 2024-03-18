@@ -4,9 +4,7 @@ import {isoDate, shortDate} from '../lib/utils'
 import {Image} from 'astro:assets'
 import Media from '../components/Media.astro'
 
-let {created, image, updated} = Astro.props
-
-image &&= 'src/images/' + image
+const {created, image, updated} = Astro.props
 ---
 
 <Page {...Astro.props}>

@@ -36,12 +36,8 @@ function dateSlug(date: Date) {
 }
 
 export async function getPosts(includeDrafts: boolean = false) {
-  const posts = await getCollection(
-    'posts',
-    ({data}) => includeDrafts || !data.draft,
-  )
-  return R.piped(
-    posts,
+  const posts = R.piped(
+    await getCollection('posts', ({data}) => includeDrafts || !data.draft),
     R.map(post => {
       // internal created can override filename.
       const createdSlug = post.data.created
@@ -62,4 +58,6 @@ export async function getPosts(includeDrafts: boolean = false) {
     R.sortBy(a => -a.data.created),
     R.sortBy(a => +a.data.draft),
   )
+  console.log(posts)
+  return posts
 }

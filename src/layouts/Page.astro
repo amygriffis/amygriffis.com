@@ -33,7 +33,7 @@ const {
           <Image src={logo} alt="logo" />
         </a>
       ) : (
-        <Image src={logo} alt="logo" />
+        <Image class="logo" src={logo} alt="logo" />
       )
     }
     <Nav class="nav" />
@@ -85,6 +85,7 @@ const {
   .logo {
     display: block;
     grid-area: logo;
+    img&,
     & > img {
       width: 100px;
       height: auto;

@@ -1,4 +1,5 @@
 ---
+import {Image} from 'astro:assets'
 import Page from '../layouts/Page.astro'
 import {getPosts, isoDate, shortDate} from '../lib/utils'
 const posts = await getPosts()
@@ -17,10 +18,6 @@ const posts = await getPosts()
       }
     }
 
-    p.excerpt {
-      margin-bottom: var(--space1_5);
-    }
-
     footer {
       font-family: var(--metaFont);
       font-size: var(--metaSmFontSize);
@@ -32,27 +29,34 @@ const posts = await getPosts()
 <Page title="Amy Griffis" logoLink="">
   <ul class="posts">
     {
-      posts
-        .filter(({data: {index}}) => index)
-        .map(({slug, data: {title, excerpt, created, updated}}) => (
-          <li>
+      posts.map(({slug, data: {title, image, created, updated}}) => (
+        <li>
+          {title && (
             <header>
               <h1 class="h3">
                 <a href={`/${slug}`}>{title}</a>
               </h1>
             </header>
-            {excerpt && <p class="excerpt">{excerpt}</p>}
-            {created && (
-              <footer>
-                <time datetime={isoDate(created)}>{shortDate(created)}</time>
-                {
-                  // prettier-ignore
-                  updated && <>{' '}(updated: <time datetime={isoDate(updated)}> {shortDate(updated)}</time>)</>
-                }
-              </footer>
-            )}
-          </li>
-        ))
+          )}
+          {image && <Image src={image} alt="" />}
+          {created && (
+            <footer>
+              <time datetime={isoDate(created)}>{shortDate(created)}</time>
+              {
+                // prettier-ignore
+                updated && <>{' '}(updated: <time datetime={isoDate(updated)}> {shortDate(updated)}</time>)</>
+              }
+            </footer>
+          )}
+        </li>
+      ))
     }
   </ul>
 </Page>
+
+<style>
+  .posts img {
+    height: auto;
+    max-width: 100%;
+  }
+</style>
