@@ -3,6 +3,7 @@ import {Image} from 'astro:assets'
 import Page from '../layouts/Page.astro'
 import {getPosts, isoDate, shortDate} from '../lib/utils'
 const posts = await getPosts()
+const rendered = await Promise.all(posts.map(p => p.render()))
 ---
 
 <style>
@@ -29,27 +30,31 @@ const posts = await getPosts()
 <Page title="Amy Griffis" logoLink="">
   <ul class="posts">
     {
-      posts.map(({slug, data: {title, image, created, updated}}) => (
-        <li>
-          {title && (
-            <header>
-              <h1 class="h3">
-                <a href={`/${slug}`}>{title}</a>
-              </h1>
-            </header>
-          )}
-          {image && <Image src={image} alt="" />}
-          {created && (
-            <footer>
-              <time datetime={isoDate(created)}>{shortDate(created)}</time>
-              {
-                // prettier-ignore
-                updated && <>{' '}(updated: <time datetime={isoDate(updated)}> {shortDate(updated)}</time>)</>
-              }
-            </footer>
-          )}
-        </li>
-      ))
+      posts.map(({slug, data: {title, image, created, updated}}, i) => {
+        const {Content} = rendered[i]
+        return (
+          <li>
+            {title && (
+              <header>
+                <h1 class="h3">
+                  <a href={`/${slug}`}>{title}</a>
+                </h1>
+              </header>
+            )}
+            {image && <Image src={image} alt="" />}
+            {<Content />}
+            {created && (
+              <footer>
+                <time datetime={isoDate(created)}>{shortDate(created)}</time>
+                {
+                  // prettier-ignore
+                  updated && <>{' '}(updated: <time datetime={isoDate(updated)}> {shortDate(updated)}</time>)</>
+                }
+              </footer>
+            )}
+          </li>
+        )
+      })
     }
   </ul>
 </Page>
