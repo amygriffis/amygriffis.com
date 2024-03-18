@@ -1,0 +1,4 @@
+# http://robotstxt.org
+User-agent: *
+Allow: /
+Sitemap: https://amygriffis.com/sitemap-index.xml

@@ -1,0 +1,34 @@
+---
+interface Props {
+  class?: string
+  copyStart?: number
+  copyEnd?: number
+}
+
+const {copyStart = 2011, copyEnd = new Date().getUTCFullYear()} = Astro.props
+
+const copyRange = `${copyStart}${copyStart === copyEnd ? '' : `–${copyEnd}`}`
+---
+
+<footer {...Astro.props}>
+  <div class="site">&copy; Amy Griffis {copyRange}</div>
+</footer>
+
+<style>
+  footer {
+    margin-top: var(--space6);
+    padding-top: var(--space1);
+    padding-bottom: var(--space8);
+    border-top: 3px solid;
+    border-top-color: var(--accentColor);
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    font-family: var(--metaFont);
+  }
+
+  .site {
+    margin-bottom: var(--space4);
+    font-size: var(--metaSmFontSize);
+  }
+</style>

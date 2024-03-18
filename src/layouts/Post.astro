@@ -1,0 +1,32 @@
+---
+import Page from './Page.astro'
+import {isoDate, shortDate} from '../lib/utils'
+import {Image} from 'astro:assets'
+import Media from '../components/Media.astro'
+
+let {created, image, updated} = Astro.props
+
+image &&= 'src/images/' + image
+---
+
+<Page {...Astro.props}>
+  <Fragment slot="post-meta">
+    <time datetime={isoDate(created)} itemprop="datePublished">
+      {shortDate(created)}
+    </time>
+    {
+      // prettier-ignore
+      updated && <>{' '}(updated: <time datetime={isoDate(updated)} itemprop="dateModified">{shortDate(updated)}</time>)</>
+    }
+  </Fragment>
+  <article itemscope itemtype="https://schema.org/CreativeWork">
+    {
+      image && (
+        <Media>
+          <Image src={image} alt="" />
+        </Media>
+      )
+    }
+    <slot />
+  </article>
+</Page>
